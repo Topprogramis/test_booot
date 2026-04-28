@@ -1,13 +1,20 @@
 FROM python:3.11-slim
 
-# Устанавливаем библиотеку vk-api
-RUN pip install --no-cache-dir vk-api
-
-# Указываем рабочую папку
+# Указываем рабочую директорию
 WORKDIR /app
 
-# Копируем ваш скрипт (main.py должен быть в той же папке, что и Dockerfile)
-COPY main.py .
+# Переменная окружения для данных
+ENV DATA_DIR=/app/data
 
-# Запуск
+# Устанавливаем зависимости (используем vk-api через дефис, так надежнее для pip)
+RUN python -m pip install --upgrade pip && \
+    pip install --no-cache-dir vk-api
+
+# Создаем папку для данных и даем полные права
+RUN mkdir -p /app/data && chmod 777 /app/data
+
+# Копируем все файлы проекта в контейнер
+COPY . .
+
+# Запускаем напрямую без лишних скриптов
 CMD ["python", "main.py"]
