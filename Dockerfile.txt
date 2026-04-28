@@ -1,0 +1,13 @@
+FROM python:3.9-slim
+
+# Устанавливаем библиотеку vk-api
+RUN pip install --no-cache-dir vk-api
+
+# Указываем рабочую папку
+WORKDIR /app
+
+# Копируем ваш скрипт (main.py должен быть в той же папке, что и Dockerfile)
+COPY main.py .
+
+# Запуск
+CMD ["python", "main.py"]
